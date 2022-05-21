@@ -1,0 +1,15 @@
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: #F18701;
+    color: white;
+    font-family: sans-serif;
+    font-weight: bolder;
+    transition: background-color 0.5s;
+    margin-top: 1rem;
+}
+
+.btn:hover {
+    background-color: #F35B04;
+}

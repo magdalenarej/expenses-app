@@ -1,8 +1,8 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 import "./App.css";
-import Nav from "./components/Nav";
-import Home from "./components/Home";
+import Nav from "./components/Nav/Nav";
+import Home from "./components/Home/Home";
 import Incomes from "./components/Incomes";
 import Expenses from "./components/Expenses";
 import Summary from "./components/Summary";

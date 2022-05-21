@@ -1,0 +1,18 @@
+label {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.5rem;
+    font-weight: bold;
+}
+
+input {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: white;
+    outline: none;
+    color: #F18701;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+

@@ -1,13 +1,14 @@
 import {useSelector} from "react-redux";
-import {Doughnut} from "react-chartjs-2";
-import {Chart as ChartJS, ArcElement, Tooltip, Legend} from "chart.js";
+import {Doughnut, Bar} from "react-chartjs-2";
+import {Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale, Title} from "chart.js";
 import {useEffect, useState} from "react";
+import {isSameMonth} from "date-fns";
+import Select from "./UI/Select/Select";
 
 const initialData = {
     labels: ["groceries", "bills", "education", "clothes", "health", "entertainment", "other"],
     datasets: [
         {
-            label: "# of Votes",
             data: [],
             backgroundColor: [
                 "rgba(255, 99, 132, 0.2)",
@@ -30,13 +31,38 @@ const initialData = {
         },
     ],
 };
+const initialDataBar = {
+    labels: ['incomes', 'expenses'],
+    datasets: [
+        {
+            label: 'sum',
+            data: [],
+            backgroundColor: [
+                "blue",
+                "red",
+            ],
+            borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+            ],
+            borderWidth: 1,
+        },
+    ],
+};
+
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const getMonth = new Date().getMonth();
 
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale, BarElement, Title);
 
 const Summary = () => {
-    const expenses = useSelector(state => state.expenses);
+    const [month, setMonth] = useState(monthNames[getMonth]);
     const [data, setData] = useState(initialData);
+    const [dataSummary, setDataSummary] = useState(initialDataBar);
+    const expenses = useSelector(state => state.expenses.filter(expense => isSameMonth(new Date(expense.expenseDate), new Date(`01-${month}-2022`))));
+    const incomes = useSelector(state => state.incomes.filter(income => isSameMonth(new Date(income.incomeDate), new Date(`01-${month}-2022`))));
+
 
     useEffect(() => {
         const newExpensesByTypes = {
@@ -52,6 +78,7 @@ const Summary = () => {
         expenses.forEach((expense) => {
                 switch (expense.expenseType) {
                     case 'groceries':
+                        console.log('goceries');
                         newExpensesByTypes.groceries = newExpensesByTypes.groceries + Number(expense.expenseValue);
                         break;
                     case 'bills':
@@ -76,20 +103,34 @@ const Summary = () => {
             }
         );
 
-
         setData({
             ...data, datasets: [{...data.datasets[0], data: Object.values(newExpensesByTypes)}]
         });
-    }, [expenses]);
+        setDataSummary({
+            ...dataSummary,
+            datasets: [{
+                ...data.datasets[0], data: [incomes.reduce((acc, next) => {
+                    return next.incomeValue;
+                }, 0), expenses.reduce((acc, next) => {
+                    return next.expenseValue;
+                }, 0)]
+            }]
+        });
+    }, [month]);
 
 
     return (
-        <div>
+        <div style={{
+            textAlign: 'center'
+        }}>
             <div className="summary">
                 <h1>Summary: </h1>
+                <Select options={monthNames} label={"Choose month"} value={month}
+                        onClick={(e) => setMonth(e.target.textContent)}/>
             </div>
-            <div style={{width: "500px", margin: "0 auto"}}>
-                <Doughnut data={data}/>
+            <div>
+                <Bar data={dataSummary} style={{padding: '1rem'}}/>
+                <Doughnut data={data} style={{padding: '2rem'}}/>
             </div>
         </div>
     );

@@ -1,0 +1,14 @@
+li {
+    list-style: none;
+    background-color: #5A56BC;
+    padding: 0.7rem 0;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1rem;
+}
+
+li:hover {
+    font-weight: bolder;
+    color: #F35B04;
+    cursor: pointer;
+}

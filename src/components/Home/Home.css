@@ -1,0 +1,15 @@
+.welcome {
+    font-family: monospace;
+    padding: 3rem;
+}
+
+.welcome span {
+    font-size: 3rem;
+    font-weight: bold;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.welcome p {
+    font-size: 2rem;
+}

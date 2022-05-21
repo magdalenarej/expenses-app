@@ -2,6 +2,11 @@ import {useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {format, isSameMonth, parseISO} from "date-fns";
 import {incomesActions} from "../store/store";
+import Input from "./UI/Input/Input";
+import Button from "./UI/Button/Button";
+import Select from "./UI/Select/Select";
+import Header from "./UI/Header/Header";
+import ListElement from "./UI/ListeElement/ListElement";
 
 const randomID = () => Math.floor(Math.random() * 10000);
 const date = format(new Date(), 'yyyy-MM-dd');
@@ -14,17 +19,16 @@ const Incomes = () => {
     const [month, setMonth] = useState(monthNames[getMonth]);
     const dispatch = useDispatch();
     const incomes = useSelector(state => state.incomes.filter(income => isSameMonth(new Date(income.incomeDate), new Date(`01-${month}-2022`))));
-    console.log(incomes);
 
 
     const renderIncomes = () => {
         return incomes.map(incomeVal => {
             return (
-                <div key={incomeVal.key}>
-                    <span>{incomeVal.incomeName}</span> {' | '}
-                    <span>{incomeVal.incomeValue}</span>{' | '}
-                    <span>{format(parseISO(incomeVal.incomeDate), "dd MMM yyyy")}</span>
-                </div>
+                <ListElement key={incomeVal.key}
+                             name={incomeVal.incomeName}
+                             value={incomeVal.incomeValue}
+                             date={incomeVal.incomeDate}
+                />
             );
         });
     };
@@ -33,101 +37,50 @@ const Incomes = () => {
         return acc + Number(curr.incomeValue);
     }, 0);
 
-    const addIncome = (event) => {
-        event.preventDefault();
-        dispatch(incomesActions.addIncome(income));
-        setIncome(initialIncome);
+    const addIncome = () => {
+        if (income.incomeValue && income.incomeName) {
+            dispatch(incomesActions.addIncome(income));
+            setIncome(initialIncome);
+        }
     };
 
 
     return (
-        <div className="incomes">
-            <form className="add-income-form">
-                <input
-                    type="text"
-                    className="add-income-input-text"
+        <div>
+            <Header title={"Incomes"}/>
+            <form style={{display: "flex", flexDirection: 'column'}}>
+                <Input
+                    label={"Income from:"}
+                    type={"text"}
                     value={income.incomeName}
                     onChange={e => setIncome({...income, incomeName: e.target.value, key: randomID()})}
                 />
-                <input
-                    type="number"
-                    className="add-income-input-value"
+                <Input
+                    label={"Amount:"}
+                    type={'number'}
                     value={income.incomeValue}
                     onChange={(e) => setIncome({...income, incomeValue: e.target.value})}
                 />
-                <input
-                    type="date"
-                    className="add-income-input-date"
+                <Input
+                    label={"Date:"}
+                    type={'date'}
                     value={income.incomeDate}
                     onChange={(e) => setIncome({...income, incomeDate: format(parseISO(e.target.value), 'yyyy-MM-dd')})}
                 />
-                <button
-                    type="submit"
-                    className="add-income-btn"
-                    onClick={e => addIncome(e)}
-                >
-                    Add income
-                </button>
+                <Button text={'Add income'} onClick={() => addIncome()}/>
             </form>
             <section>
-                <select value={month} onChange={e => setMonth(e.target.value)}>
-                    <option value="January">January</option>
-                    <option value="February">February</option>
-                    <option value="March">March</option>
-                    <option value="April">April</option>
-                    <option value="May">May</option>
-                    <option value="June">June</option>
-                    <option value="July">July</option>
-                    <option value="August">August</option>
-                    <option value="September">September</option>
-                    <option value="October">October</option>
-                    <option value="November">November</option>
-                    <option value="December">December</option>
-                </select>
-                <h3>Your incomes for {month}: {incomesSummary}</h3>
-                <div className="incomes-items">
+                <h2>Your incomes:</h2>
+                <Select options={monthNames} label={"Choose month"} value={month}
+                        onClick={(e) => setMonth(e.target.textContent)}/>
+                {!!incomesSummary && <div>
                     {renderIncomes()}
-                </div>
+                    <h3>Your incomes for {month}: ${incomesSummary}</h3>
+                </div>}
             </section>
         </div>
     );
 };
 
-
-// const Incomes = (props) => {
-//   return (
-//     <div className="incomes">
-//       <form className="add-income-form">
-//         <input
-//           type="text"
-//           className="add-income-input-text"
-//           value={props.incomeName}
-//           onChange={(event) => props.setIncomeName(event.target.value)}
-//         />
-//         <input
-//           type="number"
-//           className="add-income-input-value"
-//           value={props.income}
-//           onChange={(event) => props.setIncome(event.target.value)}
-//         />
-//         <input
-//           type="date"
-//           className="add-income-input-date"
-//           value={props.incomeDate}
-//           onChange={(event) => props.setIncomeDAte(event.target.value)}
-//         />
-//         <button
-//           type="submit"
-//           className="add-income-btn"
-//           onClick={props.getIncomeHandler}
-//         >
-//           Add income
-//         </button>
-//       </form>
-//       <ul className="incomes-list">{props.incomesList}</ul>
-//       <h3>Your incomes: {props.incomesSummary}</h3>
-//     </div>
-//   );
-// };
 
 export default Incomes;

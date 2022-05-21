@@ -1,0 +1,16 @@
+h2 {
+    font-size: 2rem;
+    font-weight: bolder;
+    font-family: monospace;
+}
+
+.link {
+    padding: 1rem;
+    font-family: monospace;
+    font-size: 1.5rem;
+}
+
+.link:hover {
+    text-decoration: underline;
+    font-weight: bolder;
+}
