@@ -11,20 +11,21 @@ const initialData = {
         {
             data: [],
             backgroundColor: [
-                "rgba(255, 99, 132, 0.2)",
-                "rgba(54, 162, 235, 0.2)",
-                "rgba(244,6,6,0.2)",
-                "rgb(249,217,72, 0.2)",
-                "rgba(153, 102, 255, 0.2)",
-                "rgb(5,205,163, 0.2)",
-                "rgba(0,0,178,0.58)",
+                "rgba(249,249,249,0.8)",
+                "rgba(54, 162, 235, 0.8)",
+                "rgba(244,6,6,0.8)",
+                "rgb(249,217,72, 0.8)",
+                "rgba(153, 102, 255, 0.8)",
+                "rgb(5,205,163, 0.8)",
+                "rgba(0,0,178,0.8)",
             ],
             borderColor: [
-                "rgba(255, 99, 132, 1)",
+                "rgb(251,251,251)",
                 "rgba(54, 162, 235, 1)",
                 "rgba(255, 206, 86, 1)",
                 "rgba(75, 192, 192, 1)",
                 "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
                 "rgba(255, 159, 64, 1)",
             ],
             borderWidth: 1,
@@ -38,11 +39,11 @@ const initialDataBar = {
             label: 'sum',
             data: [],
             backgroundColor: [
-                "blue",
-                "red",
+                "rgb(248,213,101)",
+                "rgba(54, 162, 235, 1)",
             ],
             borderColor: [
-                "rgba(255, 99, 132, 1)",
+                "rgb(248,213,101)",
                 "rgba(54, 162, 235, 1)",
             ],
             borderWidth: 1,
@@ -78,7 +79,6 @@ const Summary = () => {
         expenses.forEach((expense) => {
                 switch (expense.expenseType) {
                     case 'groceries':
-                        console.log('goceries');
                         newExpensesByTypes.groceries = newExpensesByTypes.groceries + Number(expense.expenseValue);
                         break;
                     case 'bills':
