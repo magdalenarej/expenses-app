@@ -11,7 +11,7 @@ const initialData = {
         {
             data: [],
             backgroundColor: [
-                "rgba(249,249,249,0.8)",
+                "rgb(241,192,192)",
                 "rgba(54, 162, 235, 0.8)",
                 "rgba(244,6,6,0.8)",
                 "rgb(249,217,72, 0.8)",
@@ -20,7 +20,7 @@ const initialData = {
                 "rgba(0,0,178,0.8)",
             ],
             borderColor: [
-                "rgb(251,251,251)",
+                "rgb(241,192,192)",
                 "rgba(54, 162, 235, 1)",
                 "rgba(255, 206, 86, 1)",
                 "rgba(75, 192, 192, 1)",
@@ -128,10 +128,16 @@ const Summary = () => {
                 <Select options={monthNames} label={"Choose month"} value={month}
                         onClick={(e) => setMonth(e.target.textContent)}/>
             </div>
-            <div>
+            {!!(incomes.reduce((acc, next) => {
+                return next.incomeValue;
+            }, 0) && expenses.reduce((acc, next) => {
+                return next.expenseValue;
+            }, 0)) && <div>
+                <h3>Incomes and expenses:</h3>
                 <Bar data={dataSummary} style={{padding: '1rem'}}/>
+                <h3>Expenses:</h3>
                 <Doughnut data={data} style={{padding: '2rem'}}/>
-            </div>
+            </div>}
         </div>
     );
 };
